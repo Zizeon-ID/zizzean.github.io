@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pemilihan Ketua & Wakil Ketua OSIS - SMK Plus YSB Suryalaya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        title: ['Cinzel', 'serif'],
+                    },
+                    colors: {
+                        schoolBrown: '#78350f',
+                        schoolDarkBrown: '#451a03',
+                        schoolOrange: '#d97706',
+                        schoolAmber: '#f59e0b',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #3b1e08;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+            overflow-x: hidden;
+            filter: none !important;
+            user-select: none;
+        }
+        
+        @keyframes fadeInSlide {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes ambientGlow {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.08); }
+        }
+
+        .animate-fade-in {
+            animation: fadeInSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .ambient-orb {
+            animation: ambientGlow 8s ease-in-out infinite;
+        }
+
+        .zoom-overlay {
+            backdrop-filter: blur(16px);
+            background-color: rgba(10, 5, 2, 0.88);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .candidate-card {
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.7), 0 0 25px rgba(245, 158, 11, 0.15);
+        }
+
+        .candidate-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(245, 158, 11, 0.5), 0 0 35px rgba(217, 119, 6, 0.35);
+        }
+
+        .blurred {
+            filter: blur(10px) brightness(0.35);
+            pointer-events: none;
+            transform: scale(0.96);
+            opacity: 0.3;
+            transition: all 0.4s ease;
+        }
+
+        /* Neater, sharper title outline using -webkit-text-stroke and drop shadow */
+        .title-outline {
+            color: #fde047;
+            -webkit-text-stroke: 1.2px #ffffff;
+            text-shadow: 0 4px 14px rgba(0, 0, 0, 0.95);
+            letter-spacing: 0.04em;
+            line-height: 1.25;
+        }
+
+        .subtitle-gradient {
+            background: linear-gradient(135deg, #fde047 0%, #f59e0b 50%, #fb923c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.85));
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e1b4b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d97706;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-100 relative">
+
+    <canvas id="bg-particles" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <div id="kiosk-splash" class="fixed inset-0 z-50 bg-slate-950/98 backdrop-blur-3xl flex flex-col items-center justify-center p-6 text-center">
+        <div class="absolute -top-32 -left-32 w-96 h-96 bg-amber-600/10 rounded-full blur-3xl pointer-events-none ambient-orb"></div>
+        <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-orange-600/10 rounded-full blur-3xl pointer-events-none ambient-orb" style="animation-delay: 4s;"></div>
+        
+        <div class="w-24 h-24 bg-amber-500/20 text-amber-400 rounded-3xl border-2 border-amber-400/50 flex items-center justify-center mb-6 text-4xl shadow-2xl animate-bounce relative z-10">
+            <i class="fa-solid fa-lock"></i>
+        </div>
+        <h1 class="text-2xl sm:text-4xl font-black text-white uppercase tracking-wider mb-3 font-title relative z-10">Mode Terkunci Pemilihan OSIS</h1>
+        <p class="text-slate-300 max-w-md text-sm sm:text-base mb-8 leading-relaxed relative z-10">Hanya Admin yang dapat keluar dengan keyword <span class="text-amber-400 font-bold">( 1 )</span>.</p>
+        <button type="button" onclick="enterKioskFullscreen()" class="relative z-10 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black text-lg py-4 px-10 rounded-2xl shadow-2xl shadow-amber-500/30 border-2 border-amber-300 transition-all transform hover:scale-105 active:scale-95 flex items-center space-x-3 cursor-pointer">
+            <i class="fa-solid fa-expand text-xl"></i>
+            <span>MULAI FULLSCREEN</span>
+        </button>
+    </div>
+
+    <header class="w-full bg-slate-950/85 backdrop-blur-xl border-b-2 border-amber-500/40 shadow-2xl py-4 px-4 sm:px-8 flex items-center justify-between relative z-25">
+        <div class="flex items-center">
+            <div id="header-logo-left" class="flex items-center justify-center flex-shrink-0 bg-transparent border-0 shadow-none p-0 transition-all duration-300">
+                <img src="https://placehold.co/100x100/78350f/ffffff?text=OSIS" alt="Logo OSIS" class="w-full h-full object-contain bg-transparent border-0 shadow-none">
+            </div>
+        </div>
+        
+        <div class="text-center flex-1 px-4">
+            <h1 id="header-title" class="font-title font-black text-lg sm:text-2xl md:text-3xl lg:text-4xl tracking-wider uppercase title-outline">
+                PEMILIHAN KETUA & WAKIL KETUA OSIS 2026/2027
+            </h1>
+            <div class="inline-block mt-2 px-6 py-2 rounded-full bg-slate-900/90 border-2 border-amber-500/50 shadow-2xl backdrop-blur-md">
+                <h2 id="header-subtitle" class="font-sans font-black text-xs sm:text-sm md:text-base tracking-[0.35em] uppercase subtitle-gradient">
+                    SMK PLUS YSB SURYALAYA
+                </h2>
+            </div>
+        </div>
+
+        <div class="flex items-center">
+            <div id="header-logo-right" class="flex items-center justify-center flex-shrink-0 bg-transparent border-0 shadow-none p-0 transition-all duration-300">
+                <img src="https://placehold.co/100x100/78350f/ffffff?text=SEKOLAH" alt="Logo Sekolah" class="w-full h-full object-contain bg-transparent border-0 shadow-none">
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-[96rem] w-full mx-auto p-4 sm:p-8 flex flex-col justify-between relative z-10 animate-fade-in">
+        
+        <div class="mb-6 text-center">
+            <div id="step-badge" class="inline-flex items-center space-x-2 bg-gradient-to-r from-amber-600 to-orange-600 text-amber-100 font-extrabold px-5 py-2 rounded-full text-xs sm:text-sm uppercase tracking-widest shadow-2xl border border-amber-400/40 mb-3 transition-all duration-300">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Langkah 1 dari 2</span>
+            </div>
+            <h3 id="section-instruction" class="text-white font-black text-xl sm:text-3xl md:text-4xl drop-shadow-2xl uppercase tracking-wide title-outline">
+                CALON KETUA OSIS - PILIH SATU KANDIDAT...
+            </h3>
+        </div>
+
+        <div id="candidates-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 my-auto">
+        </div>
+
+        <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button type="button" id="main-voting-btn" onclick="handleMainAction()" class="w-full sm:w-auto min-w-[320px] bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black text-lg sm:text-xl py-4 px-10 rounded-2xl shadow-2xl shadow-amber-500/30 border-2 border-amber-300 transition-all transform hover:scale-105 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center space-x-3 cursor-pointer">
+                <i class="fa-solid fa-check-to-slot text-xl"></i>
+                <span id="main-btn-text">VOTING</span>
+            </button>
+        </div>
+
+    </main>
+
+    <div id="zoom-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 zoom-overlay hidden opacity-0 transition-opacity duration-300">
+        <div id="zoom-card-content" class="bg-slate-900/95 backdrop-blur-2xl rounded-3xl overflow-hidden shadow-2xl max-w-6xl w-full border-2 border-amber-500/50 transform scale-90 transition-transform duration-300 flex flex-col max-h-[92vh]">
+            <div class="bg-gradient-to-r from-amber-700 to-amber-800 text-white p-5 sm:p-6 relative flex items-center justify-between border-b border-amber-500/50 flex-shrink-0">
+                <div class="flex items-center space-x-3">
+                    <span id="zoom-badge" class="w-11 h-11 rounded-xl bg-amber-400 text-slate-950 font-black text-xl flex items-center justify-center shadow-lg">01</span>
+                    <h3 id="zoom-candidate-name" class="font-extrabold text-xl sm:text-2xl uppercase tracking-wide">Nama Kandidat</h3>
+                </div>
+                <button type="button" onclick="closeZoom()" class="w-10 h-10 rounded-xl bg-amber-900/80 hover:bg-amber-950 text-white flex items-center justify-center font-bold transition-all cursor-pointer text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="p-8 sm:p-12 grid grid-cols-1 md:grid-cols-12 gap-8 sm:gap-12 overflow-y-auto flex-1 items-center">
+                <div class="md:col-span-5 w-full max-w-md mx-auto aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl bg-slate-950 border-2 border-amber-500/30 relative flex-shrink-0">
+                    <img id="zoom-candidate-img" src="" alt="Foto Kandidat" class="w-full h-full object-cover">
+                </div>
+                
+                <div class="md:col-span-7 flex flex-col justify-between space-y-6 h-full">
+                    <div class="bg-slate-950/85 p-6 sm:p-8 rounded-2xl shadow-inner border border-slate-800 flex-1 overflow-y-auto max-h-[440px]">
+                        <h4 class="font-extrabold text-amber-400 text-base sm:text-lg mb-3 uppercase tracking-wider flex items-center">
+                            <i class="fa-solid fa-scroll mr-2 text-amber-500"></i>Visi & Misi
+                        </h4>
+                        <p id="zoom-candidate-visimisi" class="text-slate-300 text-sm sm:text-base whitespace-pre-line leading-relaxed">Visi dan Misi kandidat akan muncul di sini...</p>
+                    </div>
+                    <div class="flex space-x-4 pt-2 flex-shrink-0">
+                        <button type="button" onclick="closeZoom()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-4 px-6 rounded-xl transition-all border border-slate-700 text-base cursor-pointer">
+                            Batal
+                        </button>
+                        <button type="button" id="zoom-select-btn" onclick="confirmZoomSelection()" class="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold py-4 px-6 rounded-xl shadow-xl transition-all flex items-center justify-center space-x-2 text-base cursor-pointer">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span id="zoom-select-btn-text">Pilih Kandidat Ini</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="result-page" class="fixed inset-0 z-40 bg-slate-950/90 backdrop-blur-xl flex flex-col items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 rounded-3xl shadow-2xl max-w-2xl w-full p-6 sm:p-8 border-2 border-amber-500/50 text-center relative overflow-hidden animate-fade-in">
+            <div class="absolute -top-20 -right-20 w-60 h-60 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-20 -left-20 w-60 h-60 bg-orange-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="w-20 h-20 bg-emerald-500/20 text-emerald-400 rounded-2xl border border-emerald-500/40 flex items-center justify-center mx-auto mb-4 text-3xl shadow-inner animate-bounce">
+                <i class="fa-solid fa-award"></i>
+            </div>
+            
+            <h2 class="text-2xl sm:text-3xl font-black text-white uppercase tracking-wide mb-2">Voting Berhasil!</h2>
+            <p class="text-slate-300 text-sm sm:text-base mb-6">Terima kasih telah menggunakan hak suara Anda untuk pemilihan OSIS SMK PLUS YSB SURYALAYA.</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 text-left">
+                <div class="bg-slate-950/80 border border-amber-500/30 p-4 rounded-2xl shadow-xl">
+                    <span class="text-xs font-bold text-amber-400 uppercase tracking-wider block mb-2">Ketua OSIS Pilihan:</span>
+                    <div class="flex items-center space-x-3">
+                        <img id="res-ketua-img" src="" class="w-14 h-[4.5rem] rounded-xl object-cover border-2 border-amber-500/50 shadow">
+                        <div>
+                            <h4 id="res-ketua-name" class="font-extrabold text-white text-sm">Kandidat 01</h4>
+                            <span id="res-ketua-num" class="text-xs text-amber-300/80">Nomor 01</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-950/80 border border-amber-500/30 p-4 rounded-2xl shadow-xl">
+                    <span class="text-xs font-bold text-amber-400 uppercase tracking-wider block mb-2">Wakil Ketua Pilihan:</span>
+                    <div class="flex items-center space-x-3">
+                        <img id="res-wakil-img" src="" class="w-14 h-[4.5rem] rounded-xl object-cover border-2 border-amber-500/50 shadow">
+                        <div>
+                            <h4 id="res-wakil-name" class="font-extrabold text-white text-sm">Kandidat 01</h4>
+                            <span id="res-wakil-num" class="text-xs text-amber-300/80">Nomor 01</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-950/90 border border-amber-500/40 p-4 rounded-2xl shadow-xl text-center">
+                <p class="text-slate-300 text-xs sm:text-sm font-semibold mb-1">Otomatis kembali ke halaman utama dalam</p>
+                <div class="flex items-center justify-center space-x-2">
+                    <span id="countdown-timer-display" class="font-title font-black text-amber-400 text-3xl sm:text-4xl">10</span>
+                    <span class="text-slate-300 text-sm sm:text-base font-semibold">detik</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin-modal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 hidden overflow-y-auto">
+        <div class="bg-slate-900 rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden border-2 border-slate-700 text-slate-100">
+            <div class="bg-slate-950 p-5 sm:p-6 flex items-center justify-between border-b border-slate-800">
+                <div class="flex items-center space-x-3">
+                    <div class="w-11 h-11 rounded-2xl bg-amber-500/20 border border-amber-400/40 text-amber-400 font-black flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-black text-lg sm:text-xl uppercase tracking-wide text-white">Panel Admin OSIS</h3>
+                        <p class="text-xs text-slate-400">Akses Rahasia (Keyword: 1). Kelola teks, background HD, logo polosan, foto, & rekap suara.</p>
+                    </div>
+                </div>
+                <button type="button" onclick="toggleAdminPanel(false)" class="w-10 h-10 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center font-bold transition-all cursor-pointer">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="flex border-b border-slate-800 bg-slate-950/50 px-4 sm:px-6 pt-3 space-x-2 overflow-x-auto">
+                <button type="button" onclick="switchAdminTab('texts')" id="tab-btn-texts" class="px-4 py-2.5 font-bold text-xs sm:text-sm text-amber-400 border-b-2 border-amber-500 bg-slate-900 rounded-t-xl transition-all whitespace-nowrap cursor-pointer">
+                    Edit Teks, Background & Logo
+                </button>
+                <button type="button" onclick="switchAdminTab('ketua')" id="tab-btn-ketua" class="px-4 py-2.5 font-bold text-xs sm:text-sm text-slate-400 hover:text-white transition-all rounded-t-xl whitespace-nowrap cursor-pointer">
+                    Calon Ketua OSIS
+                </button>
+                <button type="button" onclick="switchAdminTab('wakil')" id="tab-btn-wakil" class="px-4 py-2.5 font-bold text-xs sm:text-sm text-slate-400 hover:text-white transition-all rounded-t-xl whitespace-nowrap cursor-pointer">
+                    Calon Wakil Ketua
+                </button>
+                <button type="button" onclick="switchAdminTab('stats')" id="tab-btn-stats" class="px-4 py-2.5 font-bold text-xs sm:text-sm text-slate-400 hover:text-white transition-all rounded-t-xl whitespace-nowrap cursor-pointer">
+                    Statistik Voting
+                </button>
+            </div>
+
+            <div class="p-4 sm:p-6 overflow-y-auto flex-1 space-y-6">
+                
+                <div id="admin-tab-texts" class="admin-tab-content space-y-4">
+                    <h4 class="font-bold text-white text-base border-b border-slate-800 pb-2">Pengaturan Teks, Background Website (HD) & Logo Polosan</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-amber-400 mb-1.5 uppercase">Judul Utama Header</label>
+                            <input type="text" id="input-header-title" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-sm text-white focus:ring-2 focus:ring-amber-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-amber-400 mb-1.5 uppercase">Subjudul / Nama Sekolah</label>
+                            <input type="text" id="input-header-subtitle" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-sm text-white focus:ring-2 focus:ring-amber-500 outline-none">
+                        </div>
+                        <div class="sm:col-span-2 bg-slate-950/80 p-4 rounded-2xl border border-amber-500/30">
+                            <label class="block text-xs font-bold text-amber-400 mb-1.5 uppercase"><i class="fa-solid fa-image mr-1"></i> Upload Background Website HD (Di Atas/Bawah Tulisan PEMILIHAN KETUA OSIS)</label>
+                            <p class="text-[11px] text-slate-400 mb-2">Background ini akan tampil di seluruh halaman tanpa blur di belakang kandidat.</p>
+                            <input type="file" id="input-bg-file" accept="image/*" onchange="uploadImageFile(event, 'bgImage')" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-xs text-slate-300 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-600 cursor-pointer">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-amber-400 mb-1.5 uppercase">Instruksi Halaman 1 (Ketua)</label>
+                            <input type="text" id="input-inst-ketua" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-sm text-white focus:ring-2 focus:ring-amber-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-amber-400 mb-1.5 uppercase">Instruksi Halaman 2 (Wakil Ketua)</label>
+                            <input type="text" id="input-inst-wakil" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-sm text-white focus:ring-2 focus:ring-amber-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-amber-400 mb-1.5 uppercase">Upload Logo Kiri Polosan (Tanpa Kotak)</label>
+                            <input type="file" id="input-logo-left-file" accept="image/*" onchange="uploadImageFile(event, 'logoLeft')" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-xs text-slate-300 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-600 cursor-pointer">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-amber-400 mb-1.5 uppercase">Ukuran Logo Kiri (Pixel, misal: 96)</label>
+                            <input type="number" id="input-logo-left-size" min="40" max="250" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-sm text-white focus:ring-2 focus:ring-amber-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-amber-400 mb-1.5 uppercase">Upload Logo Kanan Polosan (Tanpa Kotak)</label>
+                            <input type="file" id="input-logo-right-file" accept="image/*" onchange="uploadImageFile(event, 'logoRight')" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-xs text-slate-300 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-600 cursor-pointer">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-amber-400 mb-1.5 uppercase">Ukuran Logo Kanan (Pixel, misal: 96)</label>
+                            <input type="number" id="input-logo-right-size" min="40" max="250" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-sm text-white focus:ring-2 focus:ring-amber-500 outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="admin-tab-ketua" class="admin-tab-content space-y-6 hidden">
+                    <h4 class="font-bold text-white text-base border-b border-slate-800 pb-2">Edit Calon Ketua OSIS (4 Kandidat Portrait)</h4>
+                    <div id="admin-ketua-list" class="space-y-6"></div>
+                </div>
+
+                <div id="admin-tab-wakil" class="admin-tab-content space-y-6 hidden">
+                    <h4 class="font-bold text-white text-base border-b border-slate-800 pb-2">Edit Calon Wakil Ketua OSIS (4 Kandidat Portrait)</h4>
+                    <div id="admin-wakil-list" class="space-y-6"></div>
+                </div>
+
+                <div id="admin-tab-stats" class="admin-tab-content space-y-6 hidden">
+                    <h4 class="font-bold text-white text-base border-b border-slate-800 pb-2">Rekapitulasi Suara Voting</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="bg-slate-950/80 p-4 rounded-2xl border border-amber-500/30">
+                            <h5 class="font-bold text-amber-400 mb-3 text-sm uppercase flex items-center justify-between">
+                                <span>Suara Ketua OSIS</span>
+                                <span id="total-ketua-badge" class="bg-amber-500 text-slate-950 font-black text-xs px-2.5 py-0.5 rounded-full">Total: 0</span>
+                            </h5>
+                            <div id="stats-ketua-list" class="space-y-3 text-sm"></div>
+                        </div>
+                        <div class="bg-slate-950/80 p-4 rounded-2xl border border-amber-500/30">
+                            <h5 class="font-bold text-amber-400 mb-3 text-sm uppercase flex items-center justify-between">
+                                <span>Suara Wakil Ketua OSIS</span>
+                                <span id="total-wakil-badge" class="bg-amber-500 text-slate-950 font-black text-xs px-2.5 py-0.5 rounded-full">Total: 0</span>
+                            </h5>
+                            <div id="stats-wakil-list" class="space-y-3 text-sm"></div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between pt-4">
+                        <button type="button" onclick="exitKioskModePrompt()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-2.5 px-5 rounded-xl text-xs transition-all shadow flex items-center space-x-2 cursor-pointer">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <span>Keluar Fullscreen (Admin)</span>
+                        </button>
+                        <button type="button" onclick="openResetConfirmModal()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 px-5 rounded-xl text-xs transition-all shadow flex items-center space-x-2 cursor-pointer">
+                            <i class="fa-solid fa-trash"></i>
+                            <span>Reset Semua Data Suara</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="bg-slate-950 p-4 sm:p-6 border-t border-slate-800 flex justify-end space-x-3">
+                <button type="button" onclick="toggleAdminPanel(false)" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-3 px-6 rounded-xl transition-all cursor-pointer">
+                    Batal
+                </button>
+                <button type="button" onclick="saveAdminChanges()" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black py-3 px-6 rounded-xl shadow-xl transition-all cursor-pointer">
+                    Simpan Perubahan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="reset-confirm-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border-2 border-red-500/50 rounded-3xl p-6 max-w-sm w-full text-center shadow-2xl">
+            <div class="w-16 h-16 bg-red-500/20 text-red-400 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl border border-red-500/30">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h4 class="font-extrabold text-white text-lg mb-2 uppercase">Konfirmasi Reset</h4>
+            <p class="text-slate-300 text-xs sm:text-sm mb-6">Apakah Anda yakin ingin mereset seluruh data perolehan suara? Tindakan ini tidak dapat dibatalkan.</p>
+            <div class="flex space-x-3">
+                <button type="button" onclick="closeResetConfirmModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-2.5 rounded-xl text-xs transition-all cursor-pointer">
+                    Batal
+                </button>
+                <button type="button" onclick="executeResetVoteStats()" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow-lg cursor-pointer">
+                    Ya, Reset Suara
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center space-x-3 transform translate-y-20 opacity-0 transition-all duration-300 border border-amber-500/40">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+        <span id="toast-message" class="text-sm font-semibold">Pesan notifikasi...</span>
+    </div>
+
+    <script>
+        const defaultData = {
+            header: {
+                title: "PEMILIHAN KETUA & WAKIL KETUA OSIS 2026/2027",
+                subtitle: "SMK PLUS YSB SURYALAYA",
+                instKetua: "CALON KETUA OSIS - PILIH SATU KANDIDAT...",
+                instWakil: "CALON WAKIL KETUA OSIS - PILIH SATU KANDIDAT...",
+                logoLeft: "https://placehold.co/100x100/78350f/ffffff?text=OSIS",
+                logoRight: "https://placehold.co/100x100/78350f/ffffff?text=YSB",
+                logoLeftSize: 96,
+                logoRightSize: 96,
+                bgImage: ""
+            },
+            ketua: [
+                { id: 1, number: "01", name: "Ahmad Fauzi", img: "https://placehold.co/400x533/78350f/ffffff?text=PORTRAIT+01", visimisi: "Visi: Menjadikan OSIS sebagai wadah aspirasi yang kreatif dan berakhlak mulia.\nMisi: 1. Mengadakan event seni & olahraga rutin.\n2. Meningkatkan kedisiplinan berbasis kekeluargaan." },
+                { id: 2, number: "02", name: "Siti Nurhaliza", img: "https://placehold.co/400x533/78350f/ffffff?text=PORTRAIT+02", visimisi: "Visi: SMK Plus YSB Suryalaya Unggul, Bersih, dan Berprestasi.\nMisi: 1. Optimalisasi klub literasi dan teknologi.\n2. Transparansi program kerja OSIS." },
+                { id: 3, number: "03", name: "Rizky Ramadhan", img: "https://placehold.co/400x533/78350f/ffffff?text=PORTRAIT+03", visimisi: "Visi: Terwujudnya siswa yang religius, inovatif, dan berjiwa wirausaha.\nMisi: 1. Pelatihan kewirausahaan digital siswa.\n2. Jumat bersih dan kajian keagamaan." },
+                { id: 4, number: "04", name: "Dewi Lestari", img: "https://placehold.co/400x533/78350f/ffffff?text=PORTRAIT+04", visimisi: "Visi: OSIS Progresif, Aspiratif, dan Solutif.\nMisi: 1. Kotak aspirasi online setiap minggu.\n2. Peningkatan prestasi ekstrakurikuler." }
+            ],
+            wakil: [
+                { id: 1, number: "01", name: "Muhammad Iqbal", img: "https://placehold.co/400x533/78350f/ffffff?text=WAKIL+01", visimisi: "Visi: Mendampingi ketua mewujudkan OSIS yang solid dan tanggap.\nMisi: 1. Pengawasan program kerja yang efektif.\n2. Koordinasi erat antar kelas." },
+                { id: 2, number: "02", name: "Anisa Rahma", img: "https://placehold.co/400x533/78350f/ffffff?text=WAKIL+02", visimisi: "Visi: Mendukung penuh kemajuan siswa di bidang akademik & non-akademik.\nMisi: 1. Pendampingan lomba antar kelas.\n2. Optimalisasi mading sekolah." },
+                { id: 3, number: "03", name: "Dimas Anggara", img: "https://placehold.co/400x533/78350f/ffffff?text=WAKIL+03", visimisi: "Visi: Solidaritas tinggi tanpa batas antar angkatan.\nMisi: 1. Bakti sosial rutin.\n2. Forum diskusi pelajar terbuka." },
+                { id: 4, number: "04", name: "Siti Aisyah", img: "https://placehold.co/400x533/78350f/ffffff?text=WAKIL+04", visimisi: "Visi: Kreatif, Inovatif, dan Berkarakter Islami.\nMisi: 1. Peringatan hari besar Islam yang meriah.\n2. Pameran karya siswa." }
+            ],
+            votes: {
+                ketua: { 1: 0, 2: 0, 3: 0, 4: 0 },
+                wakil: { 1: 0, 2: 0, 3: 0, 4: 0 }
+            }
+        };
+
+        let appData = JSON.parse(localStorage.getItem('osis_app_data')) || defaultData;
+        if (!appData.header.logoLeftSize) appData.header.logoLeftSize = 96;
+        if (!appData.header.logoRightSize) appData.header.logoRightSize = 96;
+
+        let currentStep = 1;
+        let selectedKetua = null;
+        let selectedWakil = null;
+        let activeZoomItem = null;
+        let countdownInterval = null;
+        let adminUnlockedExit = false;
+
+        window.onload = function() {
+            renderApp();
+            setupSecretKeywordListener();
+            setupFullscreenGuards();
+            initBackgroundParticlesAndLeaves();
+        };
+
+        window.enterKioskFullscreen = function() {
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen().catch(() => {});
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
+            adminUnlockedExit = false;
+            const splash = document.getElementById('kiosk-splash');
+            if (splash) splash.classList.add('hidden');
+            showToast("Mode Kiosk Terkunci Aktif");
+        };
+
+        function initBackgroundParticlesAndLeaves() {
+            const canvas = document.getElementById('bg-particles');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            let particles = [];
+            let leaves = [];
+            const particleCount = 120;
+            const leafCount = 40;
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 5.0 + 1.5,
+                    color: Math.random() > 0.3 ? 'rgba(245, 158, 11, 0.75)' : 'rgba(217, 119, 6, 0.65)',
+                    speedX: (Math.random() - 0.5) * 1.1,
+                    speedY: (Math.random() - 0.5) * 1.1,
+                    pulse: Math.random() * Math.PI,
+                    pulseSpeed: 0.02 + Math.random() * 0.035
+                });
+            }
+
+            const leafColors = ['#78350f', '#92400e', '#b45309', '#d97706', '#854d0e', '#a16207'];
+            for (let i = 0; i < leafCount; i++) {
+                leaves.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    size: Math.random() * 22 + 14,
+                    speedY: Math.random() * 1.5 + 0.8,
+                    speedX: (Math.random() - 0.5) * 1.0,
+                    rotation: Math.random() * Math.PI * 2,
+                    rotSpeed: (Math.random() - 0.5) * 0.04,
+                    swayFreq: Math.random() * 0.02 + 0.01,
+                    swayAmp: Math.random() * 50 + 25,
+                    color: leafColors[Math.floor(Math.random() * leafColors.length)],
+                    opacity: Math.random() * 0.65 + 0.35
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 150) {
+                            ctx.beginPath();
+                            ctx.strokeStyle = `rgba(217, 119, 6, ${0.22 * (1 - dist / 150)})`;
+                            ctx.lineWidth = 0.8;
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                particles.forEach(p => {
+                    p.x += p.speedX;
+                    p.y += p.speedY;
+                    p.pulse += p.pulseSpeed;
+
+                    if (p.x < 0) p.x = canvas.width;
+                    if (p.x > canvas.width) p.x = 0;
+                    if (p.y < 0) p.y = canvas.height;
+                    if (p.y > canvas.height) p.y = 0;
+
+                    ctx.beginPath();
+                    const alpha = 0.45 + Math.sin(p.pulse) * 0.3;
+                    ctx.fillStyle = p.color.replace(/[\d\.]+\)$/, `${Math.max(0.15, alpha)})`);
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+
+                leaves.forEach(leaf => {
+                    leaf.y += leaf.speedY;
+                    leaf.x += Math.sin(leaf.y * leaf.swayFreq) * 1.0 + leaf.speedX;
+                    leaf.rotation += leaf.rotSpeed;
+
+                    if (leaf.y > canvas.height + 60) {
+                        leaf.y = -60;
+                        leaf.x = Math.random() * canvas.width;
+                    }
+
+                    ctx.save();
+                    ctx.translate(leaf.x, leaf.y);
+                    ctx.rotate(leaf.rotation);
+                    ctx.globalAlpha = leaf.opacity;
+                    ctx.fillStyle = leaf.color;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(0, -leaf.size / 2);
+                    ctx.bezierCurveTo(leaf.size / 2, -leaf.size / 4, leaf.size / 2, leaf.size / 4, 0, leaf.size / 2);
+                    ctx.bezierCurveTo(-leaf.size / 2, leaf.size / 4, -leaf.size / 2, -leaf.size / 4, 0, -leaf.size / 2);
+                    ctx.fill();
+                    
+                    ctx.beginPath();
+                    ctx.strokeStyle = 'rgba(40, 20, 5, 0.5)';
+                    ctx.lineWidth = 1.0;
+                    ctx.moveTo(0, -leaf.size / 2);
+                    ctx.lineTo(0, leaf.size / 2);
+                    ctx.stroke();
+
+                    ctx.restore();
+                });
+
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        function setupFullscreenGuards() {
+            document.addEventListener('contextmenu', e => e.preventDefault());
+
+            window.addEventListener('keydown', (e) => {
+                if (
+                    e.key === 'Escape' || 
+                    e.key === 'F11' || 
+                    e.key === 'F5' || 
+                    e.key === 'F12' ||
+                    (e.altKey && e.key === 'Tab') || 
+                    (e.ctrlKey && (e.key === 'w' || e.key === 'r' || e.key === 'i' || e.key === 'u' || e.key === 's'))
+                ) {
+                    if (!adminUnlockedExit) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        showToast("Akses dibatasi. Kiosk terkunci penuh untuk siswa.", true);
+                        try {
+                            if (!document.fullscreenElement) {
+                                document.documentElement.requestFullscreen().catch(() => {});
+                            }
+                        } catch(err) {}
+                    }
+                }
+            }, true);
+
+            document.addEventListener('fullscreenchange', () => {
+                if (!document.fullscreenElement) {
+                    if (!adminUnlockedExit) {
+                        const adminModal = document.getElementById('admin-modal');
+                        if (adminModal && adminModal.classList.contains('hidden')) {
+                            try {
+                                document.documentElement.requestFullscreen().catch(() => {});
+                            } catch(e) {}
+                            const splash = document.getElementById('kiosk-splash');
+                            if (splash) splash.classList.remove('hidden');
+                        }
+                    }
+                }
+            });
+        }
+
+        window.exitKioskModePrompt = function() {
+            adminUnlockedExit = true;
+            if (document.exitFullscreen) {
+                document.exitFullscreen().catch(() => {});
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            }
+            toggleAdminPanel(false);
+            const splash = document.getElementById('kiosk-splash');
+            if (splash) splash.classList.remove('hidden');
+            showToast("Fullscreen Terbuka oleh Admin");
+        };
+
+        function saveAppData() {
+            try {
+                localStorage.setItem('osis_app_data', JSON.stringify(appData));
+            } catch (e) {}
+        }
+
+        function compressAndStoreImage(file, maxWidth, maxHeight, quality, callback) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    let width = img.width;
+                    let height = img.height;
+                    if (width > height) {
+                        if (width > maxWidth) {
+                            height *= maxWidth / width;
+                            width = maxWidth;
+                        }
+                    } else {
+                        if (height > maxHeight) {
+                            width *= maxHeight / height;
+                            height = maxHeight;
+                        }
+                    }
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+                    callback(compressedDataUrl);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            const msg = document.getElementById('toast-message');
+            const icon = document.getElementById('toast-icon');
+            if (!toast || !msg || !icon) return;
+            msg.innerText = message;
+            if (isError) {
+                icon.className = "fa-solid fa-circle-exclamation text-red-400 text-lg";
+            } else {
+                icon.className = "fa-solid fa-circle-check text-emerald-400 text-lg";
+            }
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        function renderApp() {
+            document.getElementById('header-title').innerText = appData.header.title;
+            document.getElementById('header-subtitle').innerText = appData.header.subtitle;
+            
+            const leftContainer = document.getElementById('header-logo-left');
+            const rightContainer = document.getElementById('header-logo-right');
+            
+            const leftSize = appData.header.logoLeftSize || 96;
+            const rightSize = appData.header.logoRightSize || 96;
+
+            leftContainer.style.width = `${leftSize}px`;
+            leftContainer.style.height = `${leftSize}px`;
+            rightContainer.style.width = `${rightSize}px`;
+            rightContainer.style.height = `${rightSize}px`;
+
+            leftContainer.innerHTML = `<img src="${appData.header.logoLeft}" class="w-full h-full object-contain bg-transparent border-0 shadow-none" onerror="this.src='https://placehold.co/100x100/78350f/ffffff?text=OSIS'">`;
+            rightContainer.innerHTML = `<img src="${appData.header.logoRight}" class="w-full h-full object-contain bg-transparent border-0 shadow-none" onerror="this.src='https://placehold.co/100x100/78350f/ffffff?text=YSB'">`;
+            
+            if (appData.header.bgImage) {
+                document.body.style.backgroundImage = `url('${appData.header.bgImage}')`;
+            } else {
+                document.body.style.backgroundImage = 'none';
+            }
+
+            const badge = document.getElementById('step-badge');
+            const instruction = document.getElementById('section-instruction');
+            const mainBtnText = document.getElementById('main-btn-text');
+            const mainBtn = document.getElementById('main-voting-btn');
+
+            if (currentStep === 1) {
+                badge.innerHTML = `<i class="fa-solid fa-layer-group"></i><span>Langkah 1 dari 2</span>`;
+                instruction.innerText = appData.header.instKetua;
+                mainBtnText.innerText = selectedKetua ? "LANJUT KE WAKIL KETUA" : "PILIH KANDIDAT DULU";
+                mainBtn.disabled = !selectedKetua;
+            } else if (currentStep === 2) {
+                badge.innerHTML = `<i class="fa-solid fa-layer-group"></i><span>Langkah 2 dari 2</span>`;
+                instruction.innerText = appData.header.instWakil;
+                mainBtnText.innerText = selectedWakil ? "VOTING SEKARANG" : "PILIH KANDIDAT DULU";
+                mainBtn.disabled = !selectedWakil;
+            }
+
+            renderCandidatesList();
+        }
+
+        function renderCandidatesList() {
+            const container = document.getElementById('candidates-container');
+            container.innerHTML = '';
+            const list = (currentStep === 1) ? appData.ketua : appData.wakil;
+            const currentSelected = (currentStep === 1) ? selectedKetua : selectedWakil;
+
+            list.forEach(item => {
+                const isSelected = currentSelected === item.id;
+                const isAnySelected = currentSelected !== null;
+
+                const card = document.createElement('div');
+                card.className = `candidate-card bg-slate-900/90 backdrop-blur-md rounded-3xl overflow-hidden border-2 flex flex-col cursor-pointer transition-all ${isSelected ? 'border-amber-400 ring-4 ring-amber-500/40 scale-105' : 'border-slate-800 hover:border-amber-500/50'} ${isAnySelected && !isSelected ? 'blurred' : ''}`;
+                card.onclick = () => window.openZoom(item);
+
+                card.innerHTML = `
+                    <div class="relative w-full aspect-[3/4] bg-slate-950 overflow-hidden border-b-2 border-slate-800">
+                        <span class="absolute top-3 left-3 z-10 w-10 h-10 rounded-xl bg-amber-500 text-slate-950 font-black text-base flex items-center justify-center shadow-lg border border-amber-300">
+                            ${item.number}
+                        </span>
+                        <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" onerror="this.src='https://placehold.co/400x533/78350f/ffffff?text=FOTO'">
+                        ${isSelected ? '<div class="absolute inset-0 bg-amber-500/20 backdrop-blur-[2px] flex items-center justify-center"><span class="bg-amber-500 text-slate-950 font-black px-4 py-2 rounded-xl text-sm shadow-xl uppercase tracking-wider animate-pulse">Terpilih</span></div>' : ''}
+                    </div>
+                    <div class="p-4 sm:p-5 flex flex-col justify-center items-center text-center flex-1 bg-gradient-to-b from-slate-900 to-slate-950">
+                        <h4 class="font-black text-amber-300 text-xl sm:text-2xl mb-2 uppercase tracking-wide leading-snug drop-shadow">${item.name}</h4>
+                        <div class="w-full bg-slate-900/90 border border-amber-500/30 rounded-xl py-2 px-3 text-amber-400 font-bold text-xs uppercase tracking-wider flex items-center justify-center space-x-2 shadow">
+                            <i class="fa-solid fa-magnifying-glass-plus text-amber-500"></i>
+                            <span>Klik untuk Detail & Pilih</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        window.openZoom = function(item) {
+            activeZoomItem = item;
+            document.getElementById('zoom-badge').innerText = item.number;
+            document.getElementById('zoom-candidate-name').innerText = item.name;
+            document.getElementById('zoom-candidate-img').src = item.img;
+            document.getElementById('zoom-candidate-visimisi').innerText = item.visimisi;
+
+            const isSelected = (currentStep === 1 && selectedKetua === item.id) || (currentStep === 2 && selectedWakil === item.id);
+            const selectBtnText = document.getElementById('zoom-select-btn-text');
+            const selectBtn = document.getElementById('zoom-select-btn');
+
+            if (isSelected) {
+                selectBtnText.innerText = "Batalkan Pilihan";
+                selectBtn.className = "flex-1 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold py-4 px-6 rounded-xl shadow-xl transition-all flex items-center justify-center space-x-2 text-base cursor-pointer";
+            } else {
+                selectBtnText.innerText = "Pilih Kandidat Ini";
+                selectBtn.className = "flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold py-4 px-6 rounded-xl shadow-xl transition-all flex items-center justify-center space-x-2 text-base cursor-pointer";
+            }
+
+            const modal = document.getElementById('zoom-modal');
+            const content = document.getElementById('zoom-card-content');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-90');
+                content.classList.add('scale-100');
+            }, 10);
+        };
+
+        window.closeZoom = function() {
+            const modal = document.getElementById('zoom-modal');
+            const content = document.getElementById('zoom-card-content');
+            modal.classList.add('opacity-0');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-90');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                activeZoomItem = null;
+            }, 300);
+        };
+
+        window.confirmZoomSelection = function() {
+            if (!activeZoomItem) return;
+            if (currentStep === 1) {
+                if (selectedKetua === activeZoomItem.id) {
+                    selectedKetua = null;
+                    showToast(`Pilihan calon ketua dibatalkan.`);
+                } else {
+                    selectedKetua = activeZoomItem.id;
+                    showToast(`Calon Ketua ${activeZoomItem.name} dipilih!`);
+                }
+            } else if (currentStep === 2) {
+                if (selectedWakil === activeZoomItem.id) {
+                    selectedWakil = null;
+                    showToast(`Pilihan calon wakil ketua dibatalkan.`);
+                } else {
+                    selectedWakil = activeZoomItem.id;
+                    showToast(`Calon Wakil Ketua ${activeZoomItem.name} dipilih!`);
+                }
+            }
+            window.closeZoom();
+            renderApp();
+        };
+
+        window.handleMainAction = function() {
+            if (currentStep === 1) {
+                if (!selectedKetua) {
+                    showToast("Pilih salah satu calon ketua terlebih dahulu!", true);
+                    return;
+                }
+                currentStep = 2;
+                renderApp();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else if (currentStep === 2) {
+                if (!selectedWakil) {
+                    showToast("Pilih salah satu calon wakil ketua terlebih dahulu!", true);
+                    return;
+                }
+                submitFinalVote();
+            }
+        };
+
+        function submitFinalVote() {
+            appData.votes.ketua[selectedKetua] = (appData.votes.ketua[selectedKetua] || 0) + 1;
+            appData.votes.wakil[selectedWakil] = (appData.votes.wakil[selectedWakil] || 0) + 1;
+            saveAppData();
+
+            const ketuaObj = appData.ketua.find(k => k.id === selectedKetua);
+            const wakilObj = appData.wakil.find(w => w.id === selectedWakil);
+
+            document.getElementById('res-ketua-img').src = ketuaObj.img;
+            document.getElementById('res-ketua-name').innerText = ketuaObj.name;
+            document.getElementById('res-ketua-num').innerText = "Nomor " + ketuaObj.number;
+
+            document.getElementById('res-wakil-img').src = wakilObj.img;
+            document.getElementById('res-wakil-name').innerText = wakilObj.name;
+            document.getElementById('res-wakil-num').innerText = "Nomor " + wakilObj.number;
+
+            document.getElementById('result-page').classList.remove('hidden');
+            startResetCountdown();
+        }
+
+        function startResetCountdown() {
+            let timeLeft = 5;
+            const display = document.getElementById('countdown-timer-display');
+            if (display) display.innerText = timeLeft;
+
+            if (countdownInterval) clearInterval(countdownInterval);
+            countdownInterval = setInterval(() => {
+                timeLeft--;
+                if (display) display.innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    resetVoting();
+                }
+            }, 1000);
+        }
+
+        function resetVoting() {
+            currentStep = 1;
+            selectedKetua = null;
+            selectedWakil = null;
+            document.getElementById('result-page').classList.add('hidden');
+            renderApp();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function setupSecretKeywordListener() {
+            let buffer = "";
+            window.addEventListener('keydown', (e) => {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+                buffer += e.key;
+                if (buffer.length > 10) buffer = buffer.slice(-10);
+                if (buffer.includes('1') || buffer.includes('(1)') || buffer.includes('( 1 )')) {
+                    buffer = "";
+                    window.toggleAdminPanel(true);
+                }
+            });
+        }
+
+        window.toggleAdminPanel = function(show) {
+            const modal = document.getElementById('admin-modal');
+            if (show) {
+                modal.classList.remove('hidden');
+                loadAdminData();
+            } else {
+                modal.classList.add('hidden');
+            }
+        };
+
+        window.switchAdminTab = function(tabName) {
+            ['texts', 'ketua', 'wakil', 'stats'].forEach(t => {
+                document.getElementById(`admin-tab-${t}`).classList.add('hidden');
+                document.getElementById(`tab-btn-${t}`).className = "px-4 py-2.5 font-bold text-xs sm:text-sm text-slate-400 hover:text-white transition-all rounded-t-xl whitespace-nowrap cursor-pointer";
+            });
+            document.getElementById(`admin-tab-${tabName}`).classList.remove('hidden');
+            document.getElementById(`tab-btn-${tabName}`).className = "px-4 py-2.5 font-bold text-xs sm:text-sm text-amber-400 border-b-2 border-amber-500 bg-slate-900 rounded-t-xl transition-all whitespace-nowrap cursor-pointer";
+
+            if (tabName === 'stats') {
+                renderAdminStats();
+            }
+        };
+
+        window.uploadImageFile = function(event, targetKey, subType = null, subIndex = null) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            let maxW = 1200;
+            let maxH = 1200;
+            let quality = 0.85;
+
+            if (targetKey === 'bgImage') {
+                maxW = 2560;
+                maxH = 1440;
+                quality = 0.90;
+            }
+
+            compressAndStoreImage(file, maxW, maxH, quality, function(compressedBase64) {
+                if (subType !== null && subIndex !== null) {
+                    appData[subType][subIndex].img = compressedBase64;
+                    saveAppData();
+                    renderApp();
+                    const imgPreview = document.getElementById(`admin-preview-${subType}-${subIndex}`);
+                    if (imgPreview) imgPreview.src = compressedBase64;
+                    showToast(`Foto Kandidat #${subIndex + 1} (${subType}) berhasil diperbarui!`);
+                } else {
+                    appData.header[targetKey] = compressedBase64;
+                    saveAppData();
+                    renderApp();
+                    showToast("Background/Logo berhasil diperbarui!");
+                }
+            });
+        };
+
+        function loadAdminData() {
+            document.getElementById('input-header-title').value = appData.header.title;
+            document.getElementById('input-header-subtitle').value = appData.header.subtitle;
+            document.getElementById('input-inst-ketua').value = appData.header.instKetua;
+            document.getElementById('input-inst-wakil').value = appData.header.instWakil;
+            document.getElementById('input-logo-left-size').value = appData.header.logoLeftSize || 96;
+            document.getElementById('input-logo-right-size').value = appData.header.logoRightSize || 96;
+            
+            document.getElementById('input-logo-left-file').value = '';
+            document.getElementById('input-logo-right-file').value = '';
+            document.getElementById('input-bg-file').value = '';
+
+            renderAdminCandidatesForm('ketua');
+            renderAdminCandidatesForm('wakil');
+            renderAdminStats();
+        }
+
+        function renderAdminCandidatesForm(type) {
+            const container = document.getElementById(`admin-${type}-list`);
+            container.innerHTML = '';
+            appData[type].forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = "bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-3";
+                div.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-amber-400 text-xs uppercase">Kandidat #${item.number} (${type.toUpperCase()})</span>
+                        <div class="w-10 h-12 rounded overflow-hidden border border-amber-500/40 bg-slate-900">
+                            <img src="${item.img}" class="w-full h-full object-cover" id="admin-preview-${type}-${index}">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-400 mb-1">Nama Lengkap</label>
+                            <input type="text" id="admin-${type}-name-${index}" value="${item.name}" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-400 mb-1">Upload Foto Portrait Baru</label>
+                            <input type="file" accept="image/*" onchange="uploadImageFile(event, null, '${type}', ${index})" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-1.5 text-xs text-slate-300 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:font-semibold file:bg-amber-500 file:text-slate-950 cursor-pointer">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-400 mb-1">Visi & Misi</label>
+                        <textarea id="admin-${type}-vm-${index}" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white">${item.visimisi}</textarea>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function renderAdminStats() {
+            let totalKetuaVotes = Object.values(appData.votes.ketua).reduce((a, b) => a + b, 0);
+            let totalWakilVotes = Object.values(appData.votes.wakil).reduce((a, b) => a + b, 0);
+
+            document.getElementById('total-ketua-badge').innerText = `Total: ${totalKetuaVotes}`;
+            document.getElementById('total-wakil-badge').innerText = `Total: ${totalWakilVotes}`;
+
+            const ketuaListContainer = document.getElementById('stats-ketua-list');
+            ketuaListContainer.innerHTML = '';
+            appData.ketua.forEach(item => {
+                const count = appData.votes.ketua[item.id] || 0;
+                const percent = totalKetuaVotes > 0 ? Math.round((count / totalKetuaVotes) * 100) : 0;
+                ketuaListContainer.innerHTML += `
+                    <div>
+                        <div class="flex justify-between text-xs font-bold mb-1">
+                            <span class="text-white">${item.number}. ${item.name}</span>
+                            <span class="text-amber-400">${count} suara (${percent}%)</span>
+                        </div>
+                        <div class="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden border border-slate-800">
+                            <div class="bg-gradient-to-r from-amber-500 to-orange-500 h-full rounded-full transition-all duration-500" style="width: ${percent}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            const wakilListContainer = document.getElementById('stats-wakil-list');
+            wakilListContainer.innerHTML = '';
+            appData.wakil.forEach(item => {
+                const count = appData.votes.wakil[item.id] || 0;
+                const percent = totalWakilVotes > 0 ? Math.round((count / totalWakilVotes) * 100) : 0;
+                wakilListContainer.innerHTML += `
+                    <div>
+                        <div class="flex justify-between text-xs font-bold mb-1">
+                            <span class="text-white">${item.number}. ${item.name}</span>
+                            <span class="text-amber-400">${count} suara (${percent}%)</span>
+                        </div>
+                        <div class="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden border border-slate-800">
+                            <div class="bg-gradient-to-r from-amber-500 to-orange-500 h-full rounded-full transition-all duration-500" style="width: ${percent}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        window.saveAdminChanges = function() {
+            appData.header.title = document.getElementById('input-header-title').value;
+            appData.header.subtitle = document.getElementById('input-header-subtitle').value;
+            appData.header.instKetua = document.getElementById('input-inst-ketua').value;
+            appData.header.instWakil = document.getElementById('input-inst-wakil').value;
+            
+            const lSize = parseInt(document.getElementById('input-logo-left-size').value);
+            const rSize = parseInt(document.getElementById('input-logo-right-size').value);
+            if (!isNaN(lSize) && lSize >= 40) appData.header.logoLeftSize = lSize;
+            if (!isNaN(rSize) && rSize >= 40) appData.header.logoRightSize = rSize;
+
+            appData.ketua.forEach((item, index) => {
+                const nameIn = document.getElementById(`admin-ketua-name-${index}`);
+                const vmInput = document.getElementById(`admin-ketua-vm-${index}`);
+                if (nameIn) item.name = nameIn.value;
+                if (vmInput) item.visimisi = vmInput.value;
+            });
+
+            appData.wakil.forEach((item, index) => {
+                const nameIn = document.getElementById(`admin-wakil-name-${index}`);
+                const vmInput = document.getElementById(`admin-wakil-vm-${index}`);
+                if (nameIn) item.name = nameIn.value;
+                if (vmInput) item.visimisi = vmInput.value;
+            });
+
+            saveAppData();
+            toggleAdminPanel(false);
+            renderApp();
+            showToast("Perubahan admin & ukuran logo berhasil disimpan!");
+        };
+
+        window.openResetConfirmModal = function() {
+            document.getElementById('reset-confirm-modal').classList.remove('hidden');
+        };
+
+        window.closeResetConfirmModal = function() {
+            document.getElementById('reset-confirm-modal').classList.add('hidden');
+        };
+
+        window.executeResetVoteStats = function() {
+            appData.votes = {
+                ketua: { 1: 0, 2: 0, 3: 0, 4: 0 },
+                wakil: { 1: 0, 2: 0, 3: 0, 4: 0 }
+            };
+            saveAppData();
+            renderAdminStats();
+            closeResetConfirmModal();
+            showToast("Data suara berhasil direset.");
+        };
+    </script>
+</body>
+</html>
